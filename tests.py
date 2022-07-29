@@ -39,15 +39,14 @@ class PaginatorTestCase(unittest.TestCase):
         )
         self.assertEqual(result, [1, 2, 3, 4, 5, 6, '...', 9, 10])
 
-        # TODO solve the following test
-        # result = paginate(
-        #     total_pages=100000000,
-        #     current_page=5,
-        #     boundaries=1,
-        #     around=1
-        # )
-        # expected = [1, 2, '...', 1499998, 1499999, 1500000, 1500001, 1500002, '...', 2999999, 3000000]
-        # self.assertEqual(result, expected)
+        result = paginate(
+            total_pages=100000000,
+            current_page=1500000,
+            boundaries=1,
+            around=2
+        )
+        expected = [1, '...', 1499998, 1499999, 1500000, 1500001, 1500002, '...', 100000000]
+        self.assertEqual(result, expected)
 
 
 if __name__ == '__main__':

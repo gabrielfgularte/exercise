@@ -1,20 +1,43 @@
 def paginate(total_pages, current_page, boundaries, around):
 
     pages = list()
-    all_pages = list(range(1, total_pages + 1))
 
-    for page in all_pages:
-        if page <= boundaries or page > total_pages - boundaries:
-            pages.append(page)
-            continue
+    if boundaries > 0:
+        pages += list(range(1, boundaries + 1))
 
-        if (page >= current_page - around and
-                page < current_page or
-                current_page + around >= page and
-                page >= current_page):
-            pages.append(page)
-        elif len(pages) == 0 or pages[-1] != '...':
-            pages.append('...')
+    if around > 0:
+        pages += list(range(current_page - around, current_page + (around + 1)))
+    else:
+        pages.append(current_page)
+
+    if boundaries > 0:
+        pages += list(range(total_pages - boundaries + 1, total_pages + 1))
+
+    pages = list(dict.fromkeys(pages))
+
+    previous_page = 1
+    first_gap = None
+    last_gap = None
+
+    for i, page in enumerate(pages):
+        if page - previous_page == 0:
+            previous_page += 1
+        else:
+            if first_gap:
+                last_gap = i + 1
+                break
+            first_gap = i
+            previous_page = page + 1
+
+    if first_gap:
+        pages.insert(first_gap, '...')
+    elif pages[0] != 1:
+        pages.insert(0, '...')
+
+    if last_gap:
+        pages.insert(last_gap, '...')
+    elif pages[-1] != total_pages:
+        pages.append('...')
 
     return pages
 
