@@ -13,7 +13,7 @@ def paginate(total_pages, current_page, boundaries, around):
                 current_page + around >= page and
                 page >= current_page):
             pages.append(page)
-        elif pages[-1] != '...':
+        elif len(pages) == 0 or pages[-1] != '...':
             pages.append('...')
 
     return pages
